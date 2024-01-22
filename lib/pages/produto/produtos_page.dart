@@ -66,13 +66,17 @@ class _ProdutosPageState extends State<ProdutosPage> {
                   },
                 ),
                 IconButton(
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const FormProduto(),
-                      ),
-                    );
+                  onPressed: () async {
+                    var idsEscolas = await _escolaService.getAllIdNome();
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              FormProduto(idsEscolas: idsEscolas),
+                        ),
+                      );
+                    });
                   },
                   icon: const Icon(Icons.add_box_outlined),
                   selectedIcon: const Icon(Icons.add_box),

@@ -7,19 +7,24 @@ import 'package:formato/config/injetor_dependencia.dart';
 import 'package:formato/entity/produto.dart';
 import 'package:formato/pages/home_page.dart';
 import 'package:formato/service/escola_service.dart';
+import 'package:formato/service/formulario_service.dart';
 import 'package:formato/service/produto_service.dart';
 import 'package:image_picker/image_picker.dart';
 
 class FormProduto extends StatefulWidget {
-  const FormProduto({super.key});
+  final List<Map<String, Object?>> idsEscolas;
+  const FormProduto({super.key, required this.idsEscolas});
 
   @override
   State<FormProduto> createState() => _FormProdutoState();
 }
 
 class _FormProdutoState extends State<FormProduto> {
+  final escolaService = getIt<EscolaService>();
+  final formularioService = getIt<FormularioService>();
   final _formKey = GlobalKey<FormBuilderState>();
-  late Future<List<Map<String, Object?>>> _idsEscolas;
+  late List<Map<String, String>> _idsNomesEscolas;
+
   final imagePicker = ImagePicker();
   File? imageFile;
 
@@ -30,7 +35,8 @@ class _FormProdutoState extends State<FormProduto> {
   }
 
   Future<void> _carregarIdsEscolas() async {
-    _idsEscolas = getIt<EscolaService>().getAllIdNome();
+    _idsNomesEscolas =
+        _converterLista(widget.idsEscolas as List<Map<String, String>>);
   }
 
   List<Map<String, String>> _converterLista(
@@ -62,6 +68,23 @@ class _FormProdutoState extends State<FormProduto> {
 
   @override
   Widget build(BuildContext context) {
+    final campos = formularioService.criarCamposFormulario(
+      campos: [
+        CampoFormulario(
+            name: 'nome',
+            label: 'Nome',
+            type: TypeFormulario.textField,
+            validator: FormBuilderValidators.required()),
+        CampoDropDown(
+          name: 'idEscola',
+          label: 'Escola',
+          type: TypeFormulario.dropDown,
+          validator: FormBuilderValidators.required(),
+          valores: _idsNomesEscolas,
+        ),
+      ],
+    );
+
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -85,10 +108,10 @@ class _FormProdutoState extends State<FormProduto> {
                 ),
               ),
               const Divider(height: 50),
-              FormBuilder(
-                key: _formKey,
-                child: SingleChildScrollView(
-                  child: Card(
+              Expanded(
+                child: Card(
+                  child: FormBuilder(
+                    key: _formKey,
                     child: Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: Column(
@@ -98,17 +121,15 @@ class _FormProdutoState extends State<FormProduto> {
                             children: [
                               Stack(
                                 children: [
-                                  Expanded(
+                                  CircleAvatar(
+                                    radius: 75,
+                                    backgroundColor: Colors.blueAccent[200],
                                     child: CircleAvatar(
-                                      radius: 75,
-                                      backgroundColor: Colors.blueAccent[200],
-                                      child: CircleAvatar(
-                                        radius: 65,
-                                        backgroundColor: Colors.blueAccent[400],
-                                        backgroundImage: imageFile != null
-                                            ? FileImage(imageFile!)
-                                            : null,
-                                      ),
+                                      radius: 65,
+                                      backgroundColor: Colors.blueAccent[400],
+                                      backgroundImage: imageFile != null
+                                          ? FileImage(imageFile!)
+                                          : null,
                                     ),
                                   ),
                                   Positioned(
@@ -129,42 +150,13 @@ class _FormProdutoState extends State<FormProduto> {
                               ),
                             ],
                           ),
-                          FormBuilderTextField(
-                            name: 'nome',
-                            decoration:
-                                const InputDecoration(labelText: 'Nome'),
-                            validator: FormBuilderValidators.required(),
-                          ),
-                          FutureBuilder(
-                            future: _idsEscolas,
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return const Padding(
-                                  padding: EdgeInsets.all(8.0),
-                                  child: CircularProgressIndicator(),
-                                );
-                              } else if (snapshot.hasError) {
-                                return const Text(
-                                  'Erro ao carregar as escolas',
-                                );
-                              } else {
-                                var idsNomesEscolas = _converterLista(snapshot
-                                    .data! as List<Map<String, String>>);
-                                return FormBuilderDropdown(
-                                  name: 'idEscola',
-                                  decoration: const InputDecoration(
-                                      labelText: 'Escola'),
-                                  items: idsNomesEscolas
-                                      .map((escola) => DropdownMenuItem(
-                                            value: escola["value"],
-                                            child: Text('${escola["key"]}'),
-                                          ))
-                                      .toList(),
-                                  validator: FormBuilderValidators.required(),
-                                );
-                              }
-                            },
+                          Expanded(
+                            child: ListView.builder(
+                              itemCount: campos.length,
+                              itemBuilder: ((context, index) {
+                                return campos[index];
+                              }),
+                            ),
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
