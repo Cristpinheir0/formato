@@ -120,6 +120,7 @@ class _FormProdutoState extends State<FormProduto> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Stack(
+                                /// TODO Fazer com seja possível salvar imagem do produto
                                 children: [
                                   CircleAvatar(
                                     radius: 75,
@@ -136,13 +137,26 @@ class _FormProdutoState extends State<FormProduto> {
                                     bottom: 5,
                                     right: 5,
                                     child: CircleAvatar(
-                                      backgroundColor: Colors.grey[200],
-                                      child: IconButton(
-                                        onPressed: _showOpcoesBottomSheet,
-                                        icon: Icon(
-                                          Icons.edit,
-                                          color: Colors.grey[400],
-                                        ),
+                                      radius: 20,
+                                      backgroundColor: Colors.blueAccent[200],
+                                    ),
+                                  ),
+                                  Positioned(
+                                    bottom: 10,
+                                    right: 10,
+                                    child: CircleAvatar(
+                                      radius: 15,
+                                      backgroundColor: Colors.blueAccent[400],
+                                    ),
+                                  ),
+                                  Positioned(
+                                    bottom: 0,
+                                    right: 0,
+                                    child: IconButton(
+                                      onPressed: _showOpcoesBottomSheet,
+                                      icon: Icon(
+                                        Icons.edit,
+                                        color: Colors.blueAccent[200],
                                       ),
                                     ),
                                   ),
@@ -233,7 +247,7 @@ class _FormProdutoState extends State<FormProduto> {
                   backgroundColor: Colors.grey[200],
                   child: Center(
                     child: Icon(
-                      Icons.edit,
+                      Icons.photo_size_select_actual_rounded,
                       color: Colors.grey[500],
                     ),
                   ),
@@ -253,7 +267,7 @@ class _FormProdutoState extends State<FormProduto> {
                   backgroundColor: Colors.grey[200],
                   child: Center(
                     child: Icon(
-                      Icons.edit,
+                      Icons.camera_alt_rounded,
                       color: Colors.grey[500],
                     ),
                   ),
@@ -273,7 +287,7 @@ class _FormProdutoState extends State<FormProduto> {
                   backgroundColor: Colors.grey[200],
                   child: Center(
                     child: Icon(
-                      Icons.edit,
+                      Icons.remove_circle,
                       color: Colors.grey[500],
                     ),
                   ),

@@ -29,71 +29,119 @@ class _ProdutoDashPageState extends State<ProdutoDashPage> {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.only(left: 10, right: 10),
+          padding: const EdgeInsets.all(10),
           child: Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 25),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: Card(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                _produto.nome,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 26,
-                                ),
-                              ),
-                              Text(
-                                'Escola: $_nomeEscola',
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 26,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const Expanded(
-                child: Row(
+              Expanded(
+                child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Expanded(
-                          child: Card(
-                              child: Column(
-                        children: [
-                          Text('Teste'),
-                        ],
-                      ))),
-                      Expanded(child: Card(child: Column(
-                        children: [
-                          Text('Teste'),
-                        ],
-                      ))),
+                      Flexible(
+                        flex: 1,
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Card(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: [
+                                      const Flexible(
+                                        flex: 1,
+                                        child: Expanded(
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              CircleAvatar(
+                                                radius: 65,
+                                                backgroundColor: Colors.black,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      Flexible(
+                                        flex: 2,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'Produto: ${_produto.nome}',
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: 26,
+                                              ),
+                                            ),
+                                            Text(
+                                              'Escola: $_nomeEscola',
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: 26,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      const Flexible(
+                        flex: 2,
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Card(
+                                child: Center(
+                                    child: Text(
+                                        'ESTATISTICAS DE VENDA DO PRODUTO')),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const Flexible(
+                        flex: 1,
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Card(
+                                child: Center(
+                                  /// TODO Implementar estoque no app
+                                    child: Text('INFORMAÇÕES DE ESTOQUE')),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ]),
               ),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const HomePage(currentPageIndex: 0),
-                    ),
-                  );
-                },
-                child: const Text('Voltar'),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              const HomePage(currentPageIndex: 0),
+                        ),
+                      );
+                    },
+                    child: const Text('Voltar'),
+                  ),
+                ],
               ),
             ],
           ),
